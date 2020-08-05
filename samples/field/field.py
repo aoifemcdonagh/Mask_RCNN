@@ -235,7 +235,7 @@ class FieldDataset(utils.Dataset):
         # If not a COCO image, delegate to parent class.
         image_info = self.image_info[image_id]
         if image_info["source"] != "coco":
-            return super(CocoDataset, self).load_mask(image_id)
+            return super(FieldDataset, self).load_mask(image_id)
 
         instance_masks = []
         class_ids = []
@@ -270,7 +270,7 @@ class FieldDataset(utils.Dataset):
             return mask, class_ids
         else:
             # Call super class to return an empty mask
-            return super(CocoDataset, self).load_mask(image_id)
+            return super(FieldDataset, self).load_mask(image_id)
 
     def image_reference(self, image_id):
         """Return a link to the image in the COCO Website."""
@@ -278,7 +278,7 @@ class FieldDataset(utils.Dataset):
         if info["source"] == "coco":
             return "http://cocodataset.org/#explore?id={}".format(info["id"])
         else:
-            super(CocoDataset, self).image_reference(image_id)
+            super(FieldDataset, self).image_reference(image_id)
 
     # The following two functions are from pycocotools with a few changes.
 
@@ -480,14 +480,14 @@ if __name__ == '__main__':
     if args.command == "train":
         # Training dataset. Use the training set and 35K from the
         # validation set, as as in the Mask RCNN paper.
-        dataset_train = CocoDataset()
+        dataset_train = FieldDataset()
         dataset_train.load_coco(args.dataset, "train", year=args.year, auto_download=args.download)
         if args.year in '2014':
             dataset_train.load_coco(args.dataset, "valminusminival", year=args.year, auto_download=args.download)
         dataset_train.prepare()
 
         # Validation dataset
-        dataset_val = CocoDataset()
+        dataset_val = FieldDataset()
         val_type = "val" if args.year in '2017' else "minival"
         dataset_val.load_coco(args.dataset, val_type, year=args.year, auto_download=args.download)
         dataset_val.prepare()
@@ -526,7 +526,7 @@ if __name__ == '__main__':
 
     elif args.command == "evaluate":
         # Validation dataset
-        dataset_val = CocoDataset()
+        dataset_val = FieldDataset()
         val_type = "val" if args.year in '2017' else "minival"
         coco = dataset_val.load_coco(args.dataset, val_type, year=args.year, return_coco=True, auto_download=args.download)
         dataset_val.prepare()
