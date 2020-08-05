@@ -488,7 +488,7 @@ if __name__ == '__main__':
 
         # Validation dataset
         dataset_val = FieldDataset()
-        val_type = "val" if args.year in '2017' else "minival"
+        val_type = "val" if args.year in '2017' else "val"
         dataset_val.load_field(args.dataset, val_type, year=args.year, auto_download=args.download)
         dataset_val.prepare()
 
