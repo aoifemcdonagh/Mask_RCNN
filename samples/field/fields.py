@@ -84,7 +84,10 @@ class FieldConfig(Config):
     GPU_COUNT = 2
 
     # Number of classes (including background)
-    NUM_CLASSES = 5 + 80  # COCO has 80 classes, Denmark LPIS dataset has 5 field classes
+    NUM_CLASSES = 1 + 5  # background and 5 field classes
+
+    # Number of training steps per epoch
+    STEPS_PER_EPOCH = 100
 
 
 ############################################################
@@ -438,9 +441,9 @@ if __name__ == '__main__':
 
     # Configurations
     if args.command == "train":
-        config = CocoConfig()
+        config = FieldConfig()
     else:
-        class InferenceConfig(CocoConfig):
+        class InferenceConfig(FieldConfig):
             # Set batch size to 1 since we'll be running inference on
             # one image at a time. Batch size = GPU_COUNT * IMAGES_PER_GPU
             GPU_COUNT = 1
