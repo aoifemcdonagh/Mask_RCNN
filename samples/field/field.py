@@ -95,7 +95,7 @@ class FieldConfig(Config):
 ############################################################
 
 class FieldDataset(utils.Dataset):
-    def load_fields(self, dataset_dir, subset, year=DEFAULT_DATASET_YEAR, class_ids=None,
+    def load_field(self, dataset_dir, subset, year=DEFAULT_DATASET_YEAR, class_ids=None,
                   class_map=None, return_coco=False, auto_download=False):
         """Load a subset of the COCO dataset.
         dataset_dir: The root directory of the COCO dataset.
