@@ -84,7 +84,7 @@ class FieldConfig(Config):
     GPU_COUNT = 2
 
     # Number of classes (including background)
-    NUM_CLASSES = 1 + 5  # background and 5 field classes
+    NUM_CLASSES = 1 + 1  # background and field
 
     # Number of training steps per epoch
     STEPS_PER_EPOCH = 100
