@@ -13,6 +13,8 @@ import matplotlib.patches as patches
 # Root directory of the project
 ROOT_DIR = os.path.abspath("../../")
 
+MODEL_DIR = os.path.join(ROOT_DIR, "logs")
+
 # Import Mask RCNN
 sys.path.append(ROOT_DIR)  # To find local version of the library
 from mrcnn import utils
