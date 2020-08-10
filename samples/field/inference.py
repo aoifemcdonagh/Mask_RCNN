@@ -80,8 +80,7 @@ if __name__ == '__main__':
     results = model.detect([image], verbose=1)
 
     # Display results
-    ax = get_ax(1)
+    #ax = get_ax(1)
     r = results[0]
     visualize.display_instances(image, r['rois'], r['masks'], r['class_ids'], 
-                                dataset.class_names, r['scores'], ax=ax,
-                                title="Predictions")
+                                dataset.class_names, r['scores'], title="Predictions")
