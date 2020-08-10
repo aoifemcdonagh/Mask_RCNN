@@ -41,6 +41,14 @@ if __name__ == '__main__':
     image_path = str(sys.argv[1])  # path to image to perform inference
 
     config = field.FieldConfig()
+    FIELD_DIR = os.path.join(ROOT_DIR, "datasets/field")
+
+    # Load validation dataset
+    dataset = field.FieldDataset()
+    dataset.load_field(FIELD_DIR, "val")
+
+    # Must call before using the dataset
+    dataset.prepare()
 
     # Override the training configurations with a few
     # changes for inferencing.
@@ -52,7 +60,7 @@ if __name__ == '__main__':
     config = InferenceConfig()
     config.display()
 
-    DEVICE = "/cpu:0"  # /cpu:0 or /gpu:0
+    DEVICE = "/gpu:0"  # /cpu:0 or /gpu:0
     TEST_MODE = "inference"
 
     # Create model in inference mode
