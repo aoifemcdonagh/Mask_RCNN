@@ -74,7 +74,7 @@ if __name__ == '__main__':
     model.load_weights(weights_path, by_name=True)
 
     # Load image
-    image = skimage.io.imread(image_path)
+    image = skimage.io.imread(image_path, plugin='pil')
 
     # Run object detection
     results = model.detect([image], verbose=1)
