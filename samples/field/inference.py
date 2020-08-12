@@ -69,7 +69,7 @@ def get_polygons(masks):
     num_masks = masks.shape[2]
     polygons = [None] * num_masks
 
-    for i in num_masks:
+    for i in range(num_masks):
         mask = masks[:,:,i]
         polygons[i] = get_vertices(mask)
 
