@@ -6,8 +6,10 @@ import re
 import time
 import numpy as np
 import skimage.io
+from skimage.measure import find_contours
 import tensorflow as tf
 import matplotlib
+from matplotlib.patches import Polygon
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 
@@ -35,6 +37,43 @@ def get_ax(rows=1, cols=1, size=16):
     """
     _, ax = plt.subplots(rows, cols, figsize=(size*cols, size*rows))
     return ax
+
+
+def get_polygon(mask):
+    """
+    Function which takes a series of binary/boolean masks as input
+    returns polygon vertices
+    :param mask:
+    :return:
+    """
+
+    # Mask Polygon
+    # Pad to ensure proper polygons for masks that touch image edges.
+    padded_mask = np.zeros((mask.shape[0] + 2, mask.shape[1] + 2), dtype=np.uint8)
+    padded_mask[1:-1, 1:-1] = mask
+    contours = find_contours(padded_mask, 0.5)
+    for verts in contours:
+        # Subtract the padding and flip (y, x) to (x, y)
+        verts = np.fliplr(verts) - 1
+
+    return verts
+
+
+def get_polygons(masks):
+    """
+    Function which takes a single boolean mask and returns polygon vertices
+    :param masks:
+    :return:
+    """
+
+    num_masks = masks.shape[2]
+    polygons = [None] * num_masks
+
+    for i in num_masks:
+        mask = masks[:,:,i]
+        polygons[i] = get_polygon(mask)
+
+    return polygons
 
 
 if __name__ == '__main__':
@@ -82,5 +121,11 @@ if __name__ == '__main__':
     # Display results
     #ax = get_ax(1)
     r = results[0]
+    masks = r['masks']
+
+
+
     visualize.display_instances(image, r['rois'], r['masks'], r['class_ids'], 
                                 dataset.class_names, show_bbox=False, title="Predictions")
+
+    
