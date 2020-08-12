@@ -39,12 +39,12 @@ def get_ax(rows=1, cols=1, size=16):
     return ax
 
 
-def get_polygon(mask):
+def get_vertices(mask):
     """
-    Function which takes a series of binary/boolean masks as input
+    Function which takes a single boolean mask as input
     returns polygon vertices
-    :param mask:
-    :return:
+    :param mask: boolean mask
+    :return: array of vertices
     """
 
     # Mask Polygon
@@ -61,9 +61,9 @@ def get_polygon(mask):
 
 def get_polygons(masks):
     """
-    Function which takes a single boolean mask and returns polygon vertices
-    :param masks:
-    :return:
+    Function which takes a series of boolean masks as input and returns polygon vertices
+    :param masks: tuple of boolean masks
+    :return: list of polygon vertices corresponding to masks
     """
 
     num_masks = masks.shape[2]
@@ -71,7 +71,7 @@ def get_polygons(masks):
 
     for i in num_masks:
         mask = masks[:,:,i]
-        polygons[i] = get_polygon(mask)
+        polygons[i] = get_vertices(mask)
 
     return polygons
 
@@ -123,7 +123,7 @@ if __name__ == '__main__':
     r = results[0]
     masks = r['masks']
 
-
+    polygon_vertices = get_polygons(masks=masks)
 
     visualize.display_instances(image, r['rois'], r['masks'], r['class_ids'], 
                                 dataset.class_names, show_bbox=False, title="Predictions")
