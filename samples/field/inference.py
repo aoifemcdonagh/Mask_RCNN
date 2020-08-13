@@ -100,7 +100,7 @@ def display_polygons(image, polygons, title="Predictions", figsize=(16,16)):
     :return:
     """
 
-    N = polygon_vertices.len  # number of instances
+    N = polygons.len  # number of instances
     _, ax = plt.subplots(1, figsize=figsize)
     auto_show = True
 
