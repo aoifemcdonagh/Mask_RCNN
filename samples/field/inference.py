@@ -96,11 +96,11 @@ def display_polygons(image, polygons, title="Predictions", figsize=(16,16)):
     """
     Function which
     :param image:
-    :param polygon_vertices:
+    :param polygons:
     :return:
     """
 
-    N = polygons.len  # number of instances
+    N = len(polygons)  # number of instances
     _, ax = plt.subplots(1, figsize=figsize)
     auto_show = True
 
@@ -175,11 +175,11 @@ if __name__ == '__main__':
     r = results[0]
     masks = r['masks']
 
-    polygon_vertices = get_polygons(masks=masks)
+    extracted_polygons = get_polygons(masks=masks)
 
     visualize.display_instances(image, r['rois'], r['masks'], r['class_ids'], 
                                 dataset.class_names, show_bbox=False, show_mask=False, title="Predictions")
 
-    display_polygons(image=image, polygons=polygon_vertices)
+    display_polygons(image=image, polygons=extracted_polygons)
 
     
