@@ -51,6 +51,8 @@ def get_vertices(mask):
     # Pad to ensure proper polygons for masks that touch image edges.
     padded_mask = np.zeros((mask.shape[0] + 2, mask.shape[1] + 2), dtype=np.uint8)
     padded_mask[1:-1, 1:-1] = mask
+
+    # ndarray of shape (n,2) where n is number of vertices in contour
     contours = find_contours(padded_mask, 0.5)
     for verts in contours:
         # Subtract the padding and flip (y, x) to (x, y)
@@ -74,6 +76,56 @@ def get_polygons(masks):
         polygons[i] = get_vertices(mask)
 
     return polygons
+
+
+def get_UTM_coords(polygon, origin=(0,0)):
+    """
+    Function which returns the polygon vertices as UTM coordinates
+    :param polygon:
+    :param origin: UTM coordinate at bottom left of image
+    :return:
+    """
+
+    utm_coords = [None] * len(polygon)  # make list of Nones the same length as polygon
+
+    #for vertice in polygon:
+        # convert to UTM using origin values
+
+
+def display_polygons(image, polygons, title="Predictions", figsize=(16,16)):
+    """
+    Function which
+    :param image:
+    :param polygon_vertices:
+    :return:
+    """
+
+    N = polygon_vertices.len  # number of instances
+    _, ax = plt.subplots(1, figsize=figsize)
+    auto_show = True
+
+    colors = visualize.random_colors(N)
+
+    # Show area outside image boundaries.
+    height, width = image.shape[:2]
+    ax.set_ylim(height + 10, -10)
+    ax.set_xlim(-10, width + 10)
+    ax.axis('off')
+    ax.set_title(title)
+
+    plot_image = image.astype(np.uint32).copy()
+
+    for i in range(N):
+        color = colors[i]
+
+        verts = polygons[i]  # get ndarray of polygon vertices
+
+        p = Polygon(verts, facecolor="none", edgecolor=color)
+        ax.add_patch(p)
+
+    ax.imshow(plot_image.astype(np.uint8))
+    if auto_show:
+        plt.show()
 
 
 if __name__ == '__main__':
@@ -126,6 +178,8 @@ if __name__ == '__main__':
     polygon_vertices = get_polygons(masks=masks)
 
     visualize.display_instances(image, r['rois'], r['masks'], r['class_ids'], 
-                                dataset.class_names, show_bbox=False, title="Predictions")
+                                dataset.class_names, show_bbox=False, show_mask=False, title="Predictions")
+
+    display_polygons(image=image, polygons=polygon_vertices)
 
     
