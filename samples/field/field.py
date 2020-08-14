@@ -81,7 +81,7 @@ class FieldConfig(Config):
     IMAGES_PER_GPU = 1
 
     # Uncomment to train on 2 GPUs (default is 1)
-    GPU_COUNT = 2
+    GPU_COUNT = 1
 
     # Number of classes (including background)
     NUM_CLASSES = 1 + 1  # background and field
