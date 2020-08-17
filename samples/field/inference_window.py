@@ -166,8 +166,8 @@ if __name__ == '__main__':
     image = skimage.io.imread(image_path, plugin='pil')
 
     # may need to swap these around?
-    image_width = image.shape[0]
-    image_height = image.shape[1]
+    image_x = image.shape[0]
+    image_y = image.shape[1]
 
     window_width = 256  # width of window to use for inference pass
     slide_width = 256  # change to number < 256 to overlap inference passes
@@ -179,16 +179,19 @@ if __name__ == '__main__':
     m = 0  # height counters
     n = window_width -1
 
-    while i < image_width and j < image_height:
-        window = image[i:j, m:n, :]  # get image window
+    while j < image_x:  # iterate down height
+        while i < image_y:  # iterate across width
+            window = image[i:j, m:n, :]  # get image window
 
-        _, ax = plt.subplots(1, figsize=(16, 16))
-        ax.imshow(window.astype(np.uint8))
-        plt.show()
+            _, ax = plt.subplots(1, figsize=(16, 16))
+            ax.imshow(window.astype(np.uint8))
+            plt.show()
+
+            # update counters
+            i += slide_width
+            j += slide_width
 
         # update counters
-        i += slide_width
-        j += slide_width
         m += slide_width
         n += slide_width
 
