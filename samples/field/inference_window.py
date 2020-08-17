@@ -162,16 +162,6 @@ if __name__ == '__main__':
     DEVICE = "/gpu:0"  # /cpu:0 or /gpu:0
     TEST_MODE = "inference"
 
-    # Create model in inference mode
-    with tf.device(DEVICE):
-        model = modellib.MaskRCNN(mode="inference", model_dir=MODEL_DIR, config=config)
-
-    weights_path = model.find_last()
-
-    # Load weights
-    print("Loading weights ", weights_path)
-    model.load_weights(weights_path, by_name=True)
-
     # Load image
     image = skimage.io.imread(image_path, plugin='pil')
 
@@ -202,6 +192,16 @@ if __name__ == '__main__':
         m += slide_width
         n += slide_width
 
+    # Create model in inference mode
+    with tf.device(DEVICE):
+        model = modellib.MaskRCNN(mode="inference", model_dir=MODEL_DIR, config=config)
+
+    weights_path = model.find_last()
+
+    # Load weights
+    print("Loading weights ", weights_path)
+    model.load_weights(weights_path, by_name=True)
+    
     # Run object detection
     results = model.detect([image], verbose=1)
 
