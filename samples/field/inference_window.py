@@ -195,6 +195,10 @@ if __name__ == '__main__':
         m += slide_width
         n += slide_width
 
+        # re initialise counters
+        i = 0  # width counters
+        j = window_width - 1
+
     # Create model in inference mode
     with tf.device(DEVICE):
         model = modellib.MaskRCNN(mode="inference", model_dir=MODEL_DIR, config=config)
