@@ -180,7 +180,7 @@ if __name__ == '__main__':
     n = window_width -1
 
     while j < image_x:  # iterate down height
-        while i < image_y:  # iterate across width
+        while n < image_y:  # iterate across width
             window = image[i:j, m:n, :]  # get image window
 
             _, ax = plt.subplots(1, figsize=(16, 16))
