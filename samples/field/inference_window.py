@@ -179,7 +179,7 @@ if __name__ == '__main__':
     m = 0  # height counters
     n = window_width -1
 
-    while i < image_width & j < image_height:
+    while i < image_width and j < image_height:
         window = image[i:j, m:n, :]  # get image window
 
         _, ax = plt.subplots(1, figsize=(16, 16))
@@ -201,7 +201,7 @@ if __name__ == '__main__':
     # Load weights
     print("Loading weights ", weights_path)
     model.load_weights(weights_path, by_name=True)
-    
+
     # Run object detection
     results = model.detect([image], verbose=1)
 
