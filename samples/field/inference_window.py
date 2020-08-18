@@ -188,16 +188,16 @@ if __name__ == '__main__':
             plt.show()
 
             # update counters
-            i += slide_width
-            j += slide_width
+            m += slide_width
+            n += slide_width
 
         # update counters
-        m += slide_width
-        n += slide_width
+        i += slide_width
+        j += slide_width
 
         # re initialise counters
-        i = 0  # width counters
-        j = window_width - 1
+        m = 0  # width counters
+        n = window_width - 1
 
     # Create model in inference mode
     with tf.device(DEVICE):
