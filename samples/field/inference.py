@@ -18,6 +18,11 @@ ROOT_DIR = os.path.abspath("../../")
 
 MODEL_DIR = os.path.join(ROOT_DIR, "logs")
 
+# Supress warning message about 'DecompressBomb'
+from PIL import Image
+Image.MAX_IMAGE_PIXELS = 1000000000
+
+
 # Import Mask RCNN
 sys.path.append(ROOT_DIR)  # To find local version of the library
 from mrcnn import utils
@@ -150,6 +155,11 @@ if __name__ == '__main__':
 
     config = InferenceConfig()
     config.display()
+
+    # Output very dependent on the value. Some values eg 1000 cause 
+    # 'Invalid argument: Incompatible shapes' error. Powers of two 
+    # eg 2048 etc seem to work better.
+    config.IMAGE_MAX_DIM=4096
 
     DEVICE = "/gpu:0"  # /cpu:0 or /gpu:0
     TEST_MODE = "inference"
