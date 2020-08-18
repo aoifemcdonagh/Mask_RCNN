@@ -190,6 +190,7 @@ if __name__ == '__main__':
     # may need to swap these around?
     image_x = image.shape[0]
     image_y = image.shape[1]
+    print("image size: " + str(image_x) + ", " + str(image_y))
 
     window_width = args.window_width  # width of window to use for inference pass
     slide_width = args.slide_width  # change to number < 256 to overlap inference passes
@@ -200,6 +201,9 @@ if __name__ == '__main__':
 
     m = 0  # height counters
     n = window_width -1
+
+    count = 0
+    total_polygons = 0
 
     while j < image_x:  # iterate down height
         while n < image_y:  # iterate across width
@@ -214,6 +218,8 @@ if __name__ == '__main__':
             masks = r['masks']
 
             extracted_polygons = get_polygons(masks=masks)
+            print("processed window " + str(count))
+            print(str(len(extracted_polygons)) + " polygons found")
 
             #visualize.display_instances(window, r['rois'], r['masks'], r['class_ids'],
             #                            dataset.class_names, show_bbox=False, show_mask=False, title="Predictions")
@@ -221,6 +227,8 @@ if __name__ == '__main__':
             # update counters
             m += slide_width
             n += slide_width
+            count += 1
+            total_polygons += len(extracted_polygons)
 
         # update counters
         i += slide_width
@@ -230,6 +238,6 @@ if __name__ == '__main__':
         m = 0  # width counters
         n = window_width - 1
 
-
+    print("total number of polygons found: " + str(total_polygons))
     #display_polygons(image=image, polygons=extracted_polygons)
 
