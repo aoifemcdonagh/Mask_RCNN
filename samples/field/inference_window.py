@@ -135,7 +135,15 @@ def display_polygons(image, polygons, title="Predictions", figsize=(16, 16)):
 
 
 if __name__ == '__main__':
-    image_path = str(sys.argv[1])  # path to image to perform inference
+    import argparse
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument('-i', '--image', type=str, required=True, help="path to image to perform inference on")
+    parser.add_argument('-w', '--weights', type=str, help="path to model weights")
+
+    args = parser.parse_args()
+
+    image_path = args.image  # path to image to perform inference
 
     config = field.FieldConfig()
     FIELD_DIR = os.path.join(ROOT_DIR, "datasets/field")
@@ -203,7 +211,10 @@ if __name__ == '__main__':
     with tf.device(DEVICE):
         model = modellib.MaskRCNN(mode="inference", model_dir=MODEL_DIR, config=config)
 
-    weights_path = model.find_last()
+    if args.weights is not None:  # use path to model weights if given
+        weights_path = args.weights
+    else:  # else find most recent trained model in logs
+        weights_path = model.find_last()
 
     # Load weights
     print("Loading weights ", weights_path)
