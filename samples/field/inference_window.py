@@ -221,8 +221,7 @@ if __name__ == '__main__':
             print("processed window " + str(count))
             print(str(len(extracted_polygons)) + " polygons found")
 
-            #visualize.display_instances(window, r['rois'], r['masks'], r['class_ids'],
-            #                            dataset.class_names, show_bbox=False, show_mask=False, title="Predictions")
+            display_polygons(image=window, polygons=extracted_polygons)
 
             # update counters
             m += slide_width
