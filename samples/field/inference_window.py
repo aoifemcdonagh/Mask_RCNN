@@ -171,6 +171,19 @@ if __name__ == '__main__':
     DEVICE = "/gpu:0"  # /cpu:0 or /gpu:0
     TEST_MODE = "inference"
 
+    # Create model in inference mode
+    with tf.device(DEVICE):
+        model = modellib.MaskRCNN(mode="inference", model_dir=MODEL_DIR, config=config)
+
+    if args.weights is not None:  # use path to model weights if given
+        weights_path = args.weights
+    else:  # else find most recent trained model in logs
+        weights_path = model.find_last()
+
+    # Load weights
+    print("Loading weights ", weights_path)
+    model.load_weights(weights_path, by_name=True)
+
     # Load image
     image = skimage.io.imread(image_path, plugin='pil')
 
@@ -192,9 +205,18 @@ if __name__ == '__main__':
         while n < image_y:  # iterate across width
             window = image[i:j, m:n, :]  # get image window
 
-            _, ax = plt.subplots(1, figsize=(16, 16))
-            ax.imshow(window.astype(np.uint8))
-            plt.show()
+            # Run object detection
+            results = model.detect([image], verbose=1)
+
+            # Display results
+            # ax = get_ax(1)
+            r = results[0]
+            masks = r['masks']
+
+            extracted_polygons = get_polygons(masks=masks)
+
+            visualize.display_instances(image, r['rois'], r['masks'], r['class_ids'],
+                                        dataset.class_names, show_bbox=False, show_mask=False, title="Predictions")
 
             # update counters
             m += slide_width
@@ -208,31 +230,6 @@ if __name__ == '__main__':
         m = 0  # width counters
         n = window_width - 1
 
-    # Create model in inference mode
-    with tf.device(DEVICE):
-        model = modellib.MaskRCNN(mode="inference", model_dir=MODEL_DIR, config=config)
-
-    if args.weights is not None:  # use path to model weights if given
-        weights_path = args.weights
-    else:  # else find most recent trained model in logs
-        weights_path = model.find_last()
-
-    # Load weights
-    print("Loading weights ", weights_path)
-    model.load_weights(weights_path, by_name=True)
-
-    # Run object detection
-    results = model.detect([image], verbose=1)
-
-    # Display results
-    # ax = get_ax(1)
-    r = results[0]
-    masks = r['masks']
-
-    extracted_polygons = get_polygons(masks=masks)
-
-    visualize.display_instances(image, r['rois'], r['masks'], r['class_ids'],
-                                dataset.class_names, show_bbox=False, show_mask=False, title="Predictions")
 
     display_polygons(image=image, polygons=extracted_polygons)
 
