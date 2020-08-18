@@ -140,8 +140,8 @@ if __name__ == '__main__':
 
     parser.add_argument('-i', '--image', type=str, required=True, help="path to image to perform inference on")
     parser.add_argument('-m', '--weights', type=str, help="path to model weights")
-    parser.add_argument('-w', '--window-width', type=int, help="window width to use for inference")
-    parser.add_argument('-s', '--slide-width', type=int, help="slide width for inference window")
+    parser.add_argument('-w', '--window_width', type=int, default=256, help="window width to use for inference")
+    parser.add_argument('-s', '--slide_width', type=int, default=256, help="slide width for inference window")
     args = parser.parse_args()
 
     image_path = args.image  # path to image to perform inference
@@ -191,8 +191,8 @@ if __name__ == '__main__':
     image_x = image.shape[0]
     image_y = image.shape[1]
 
-    window_width = 256  # width of window to use for inference pass
-    slide_width = 256  # change to number < 256 to overlap inference passes
+    window_width = args.window_width  # width of window to use for inference pass
+    slide_width = args.slide_width  # change to number < 256 to overlap inference passes
 
     # initialise counters
     i = 0  # width counters
@@ -206,7 +206,7 @@ if __name__ == '__main__':
             window = image[i:j, m:n, :]  # get image window
 
             # Run object detection
-            results = model.detect([image], verbose=1)
+            results = model.detect([window], verbose=1)
 
             # Display results
             # ax = get_ax(1)
@@ -215,7 +215,7 @@ if __name__ == '__main__':
 
             extracted_polygons = get_polygons(masks=masks)
 
-            visualize.display_instances(image, r['rois'], r['masks'], r['class_ids'],
+            visualize.display_instances(window, r['rois'], r['masks'], r['class_ids'],
                                         dataset.class_names, show_bbox=False, show_mask=False, title="Predictions")
 
             # update counters
@@ -231,5 +231,5 @@ if __name__ == '__main__':
         n = window_width - 1
 
 
-    display_polygons(image=image, polygons=extracted_polygons)
+    #display_polygons(image=image, polygons=extracted_polygons)
 
