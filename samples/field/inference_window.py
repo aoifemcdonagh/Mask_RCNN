@@ -215,8 +215,8 @@ if __name__ == '__main__':
 
             extracted_polygons = get_polygons(masks=masks)
 
-            visualize.display_instances(window, r['rois'], r['masks'], r['class_ids'],
-                                        dataset.class_names, show_bbox=False, show_mask=False, title="Predictions")
+            #visualize.display_instances(window, r['rois'], r['masks'], r['class_ids'],
+            #                            dataset.class_names, show_bbox=False, show_mask=False, title="Predictions")
 
             # update counters
             m += slide_width
