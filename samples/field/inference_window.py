@@ -210,7 +210,7 @@ if __name__ == '__main__':
             window = image[i:j, m:n, :]  # get image window
 
             # Run object detection
-            results = model.detect([window], verbose=1)
+            results = model.detect([window])
 
             # Display results
             # ax = get_ax(1)
