@@ -139,8 +139,9 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
     parser.add_argument('-i', '--image', type=str, required=True, help="path to image to perform inference on")
-    parser.add_argument('-w', '--weights', type=str, help="path to model weights")
-
+    parser.add_argument('-m', '--weights', type=str, help="path to model weights")
+    parser.add_argument('-w', '--window-width', type=int, help="window width to use for inference")
+    parser.add_argument('-s', '--slide-width', type=int, help="slide width for inference window")
     args = parser.parse_args()
 
     image_path = args.image  # path to image to perform inference
