@@ -2,6 +2,7 @@
 
 import os
 import sys
+import time
 import numpy as np
 import skimage.io
 from skimage.measure import find_contours
@@ -142,6 +143,8 @@ if __name__ == '__main__':
     parser.add_argument('-m', '--weights', type=str, help="path to model weights")
     parser.add_argument('-w', '--window_width', type=int, default=256, help="window width to use for inference")
     parser.add_argument('-s', '--slide_width', type=int, default=256, help="slide width for inference window")
+    parser.add_argument('-p', "--plot", action='store_true',
+                        help="if specified will plot polygons for each inference window")
     args = parser.parse_args()
 
     image_path = args.image  # path to image to perform inference
@@ -205,6 +208,7 @@ if __name__ == '__main__':
     count = 0
     total_polygons = 0
 
+    t_0 = time.time()
     while j < image_x:  # iterate down height
         while n < image_y:  # iterate across width
             window = image[i:j, m:n, :]  # get image window
@@ -221,7 +225,8 @@ if __name__ == '__main__':
             print("processed window " + str(count))
             print(str(len(extracted_polygons)) + " polygons found")
 
-            display_polygons(image=window, polygons=extracted_polygons)
+            if args.plot:
+                display_polygons(image=window, polygons=extracted_polygons)
 
             # update counters
             m += slide_width
@@ -237,6 +242,7 @@ if __name__ == '__main__':
         m = 0  # width counters
         n = window_width - 1
 
+    inference_time = time.time() - t_0
     print("total number of polygons found: " + str(total_polygons))
-    #display_polygons(image=image, polygons=extracted_polygons)
+    print("inference time: " + str(round(inference_time,2)) + " seconds")
 
